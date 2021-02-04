@@ -53,14 +53,33 @@ mongoose.connect('mongodb://localhost:27017/TESTLTI', {
 mongoose.Promise = Promise;
 
 registerPlatform(
-  'https://demo.moodle.net',
-  'moodle',
-  '2ITIeerRc3T57WZ',
-  'https://demo.moodle.net/mod/lti/auth.php',
-  'https://demo.moodle.net/mod/lti/token.php',
-  'https://piedpiper3.localtunnel.me/project/submit',
-  { method: 'JWK_SET', key: 'https://demo.moodle.net/mod/lti/certs.php' }
+  'https://scorm-dev.go1static.com/ScormEngineInterface/iss/go1',
+  'scorm',
+  'vfkxe4S9fePx8g',
+  'https://scorm-dev.go1static.com/ScormEngineInterface/defaultui/player/authorizations.html',
+  'https://scorm-dev.go1static.com/ScormEngineInterface/api/v2/plugin/lti13/d0f06556-dbe9-41a0-9c3f-d67931eccdd2/token?externalConfig=9169902',
+  'https://d54281dcd7dc.ngrok.io/project/submit',
+  { method: 'JWK_SET', key: 'https://scorm-dev.go1static.com/ScormEngineInterface/api/v2/plugin/lti13/d0f06556-dbe9-41a0-9c3f-d67931eccdd2/jwks?externalConfig=9169902' }
 );
+
+registerPlatform(
+  'https://scorm-dev.go1static.com/ScormEngineInterface/iss/go1',
+  'scorm',
+  'vfkxe4S9fePx8g',
+  'https://scorm-dev.go1static.com/ScormEngineInterface/defaultui/player/authorizations.html',
+  'https://scorm-dev.go1static.com/ScormEngineInterface/api/v2/plugin/lti13/d0f06556-dbe9-41a0-9c3f-d67931eccdd2/token?externalConfig=9169902',
+  'https://d54281dcd7dc.ngrok.io/project2/submit',
+  { method: 'JWK_SET', key: 'https://scorm-dev.go1static.com/ScormEngineInterface/api/v2/plugin/lti13/d0f06556-dbe9-41a0-9c3f-d67931eccdd2/jwks?externalConfig=9169902' }
+);
+
+// "additionalInstanceInformation": {
+//   "toolClientId": "vfkxe4S9fePx8g",
+//   "jwksEndpoint": "https://scorm-dev.go1static.com/ScormEngineInterface/api/v2/plugin/lti13/d0f06556-dbe9-41a0-9c3f-d67931eccdd2/jwks?externalConfig=9169902",
+//   "oidcAuthorizationUrl": "https://scorm-dev.go1static.com/ScormEngineInterface/defaultui/player/authorizations.html",
+//   "deploymentId": "d0f06556-dbe9-41a0-9c3f-d67931eccdd2",
+//   "issuer": "https://scorm-dev.go1static.com/ScormEngineInterface/iss/go1",
+//   "accessTokenUrl": "https://scorm-dev.go1static.com/ScormEngineInterface/api/v2/plugin/lti13/d0f06556-dbe9-41a0-9c3f-d67931eccdd2/token?externalConfig=9169902"
+// }
 
 app.get('/publickey/:name', async (req, res) => {
   let publicKey = await Database.GetKey(
@@ -116,12 +135,27 @@ app.post('/auth_code', (req, res) => {
 */
 app.post("/project/submit", (req, res) => {
   //TOOL:  Validate and launch Tool
-  launchTool(req, res, '/project/submit');
+  // launchTool(req, res, '/project/submit');
+  launchTool(req, res, '');
+});
+
+app.post("/project2/submit", (req, res) => {
+  //TOOL:  Validate and launch Tool
+  // launchTool(req, res, '/project/submit');
+  launchTool(req, res, '');
 });
 
 app.get("/project/submit", (req, res) => {
   //TOOL:  Display the Project Submission page
   res.render("submit", {
+    payload: req.session.payload, 
+    formData: req.body.formData
+  });
+});
+
+app.get("/project2/submit", (req, res) => {
+  //TOOL:  Display the Project Submission page
+  res.render("submit2", {
     payload: req.session.payload, 
     formData: req.body.formData
   });
@@ -145,7 +179,8 @@ app.post(`/project/grading`, (req, res) => {
 
 app.post('/project/return', (req, res) => {
   //TOOL:  When user is done with Tool, return to Platform
-  res.redirect(req.session.decoded_launch["https://purl.imsglobal.org/spec/lti/claim/launch_presentation"].return_url);
+  // res.redirect(req.session.decoded_launch["https://purl.imsglobal.org/spec/lti/claim/launch_presentation"].return_url);
+  res.redirect('https://google.com');
   req.session.destroy();   //TODO:  Make sure sessions are being destroyed in MongoDB
 });
 
