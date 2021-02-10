@@ -58,7 +58,7 @@ registerPlatform(
   'vfkxe4S9fePx8g',
   'https://scorm-dev.go1static.com/ScormEngineInterface/defaultui/player/authorizations.html',
   'https://scorm-dev.go1static.com/ScormEngineInterface/api/v2/plugin/lti13/d0f06556-dbe9-41a0-9c3f-d67931eccdd2/token?externalConfig=9169902',
-  'https://d54281dcd7dc.ngrok.io/project/submit',
+  'https://curvy-eagle-37.loca.lt/project/submit',
   { method: 'JWK_SET', key: 'https://scorm-dev.go1static.com/ScormEngineInterface/api/v2/plugin/lti13/d0f06556-dbe9-41a0-9c3f-d67931eccdd2/jwks?externalConfig=9169902' }
 );
 
@@ -68,18 +68,29 @@ registerPlatform(
   'vfkxe4S9fePx8g',
   'https://scorm-dev.go1static.com/ScormEngineInterface/defaultui/player/authorizations.html',
   'https://scorm-dev.go1static.com/ScormEngineInterface/api/v2/plugin/lti13/d0f06556-dbe9-41a0-9c3f-d67931eccdd2/token?externalConfig=9169902',
-  'https://d54281dcd7dc.ngrok.io/project2/submit',
+  'https://curvy-eagle-37.loca.lt/project2/submit',
   { method: 'JWK_SET', key: 'https://scorm-dev.go1static.com/ScormEngineInterface/api/v2/plugin/lti13/d0f06556-dbe9-41a0-9c3f-d67931eccdd2/jwks?externalConfig=9169902' }
 );
 
-// "additionalInstanceInformation": {
-//   "toolClientId": "vfkxe4S9fePx8g",
-//   "jwksEndpoint": "https://scorm-dev.go1static.com/ScormEngineInterface/api/v2/plugin/lti13/d0f06556-dbe9-41a0-9c3f-d67931eccdd2/jwks?externalConfig=9169902",
-//   "oidcAuthorizationUrl": "https://scorm-dev.go1static.com/ScormEngineInterface/defaultui/player/authorizations.html",
-//   "deploymentId": "d0f06556-dbe9-41a0-9c3f-d67931eccdd2",
-//   "issuer": "https://scorm-dev.go1static.com/ScormEngineInterface/iss/go1",
-//   "accessTokenUrl": "https://scorm-dev.go1static.com/ScormEngineInterface/api/v2/plugin/lti13/d0f06556-dbe9-41a0-9c3f-d67931eccdd2/token?externalConfig=9169902"
-// }
+registerPlatform(
+  'https://scorm.qa.go1.cloud/ScormEngineInterface/iss/go1',
+  'scorm-on-qa',
+  'CDCYkLd6I2fxtQ',
+  'https://scorm.qa.go1.cloud/ScormEngineInterface/defaultui/player/authorizations.html',
+  'https://scorm.qa.go1.cloud/ScormEngineInterface/api/v2/plugin/lti13/db1d04ee-6688-4a79-bc19-38ef56e8320d/token?externalConfig=29343751',
+  'https://curvy-eagle-37.loca.lt/project/submit',
+  { method: 'JWK_SET', key: 'https://scorm.qa.go1.cloud/ScormEngineInterface/api/v2/plugin/lti13/db1d04ee-6688-4a79-bc19-38ef56e8320d/jwks?externalConfig=29343751' }
+);
+
+registerPlatform(
+  'https://scorm.qa.go1.cloud/ScormEngineInterface/iss/go1',
+  'scorm-on-qa',
+  'CDCYkLd6I2fxtQ',
+  'https://scorm.qa.go1.cloud/ScormEngineInterface/defaultui/player/authorizations.html',
+  'https://scorm.qa.go1.cloud/ScormEngineInterface/api/v2/plugin/lti13/db1d04ee-6688-4a79-bc19-38ef56e8320d/token?externalConfig=29343751',
+  'https://curvy-eagle-37.loca.lt/project2/submit',
+  { method: 'JWK_SET', key: 'https://scorm.qa.go1.cloud/ScormEngineInterface/api/v2/plugin/lti13/db1d04ee-6688-4a79-bc19-38ef56e8320d/jwks?externalConfig=29343751' }
+);
 
 app.get('/publickey/:name', async (req, res) => {
   let publicKey = await Database.GetKey(
@@ -179,8 +190,7 @@ app.post(`/project/grading`, (req, res) => {
 
 app.post('/project/return', (req, res) => {
   //TOOL:  When user is done with Tool, return to Platform
-  // res.redirect(req.session.decoded_launch["https://purl.imsglobal.org/spec/lti/claim/launch_presentation"].return_url);
-  res.redirect('https://google.com');
+  res.redirect(req.session.decoded_launch["https://purl.imsglobal.org/spec/lti/claim/launch_presentation"].return_url);
   req.session.destroy();   //TODO:  Make sure sessions are being destroyed in MongoDB
 });
 
